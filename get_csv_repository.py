@@ -9,11 +9,6 @@ from gitlab.v4.objects.projects import Project
 import re
 import sys
 
-def open_csv():
-  file_csv = open('repo_file', 'w')
-  writer = csv.writer(file_csv)
-  header = ["NOME_REPO","URL","VERSION","LAST_TAG"]
-  writer.writerow(header)
 
 def write_csv(nome_repo, url, version, last_tag,wr):
   repo = []
@@ -31,10 +26,10 @@ def check_version(content: List[str]):
        return match.group(2)
     elif re.search("\s*azurerm\s*", row):
        inside= True
-    
+  return ""    
 
 def main(url_, token_):
-  file_csv = open('repo_file', 'w')
+  file_csv = open('repo_file.csv', 'w')
   writer = csv.writer(file_csv)
   write_csv("NOME_REPO","URL","VERSION","LAST_TAG",writer)
   gl = gitlab.Gitlab(url=url_, private_token= token_)
@@ -66,9 +61,8 @@ def main(url_, token_):
       tag="notag" 
     write_csv(project.attributes['name'],project.attributes['http_url_to_repo'], version , tag, writer) 
 
+
   file_csv.close()
-
-
 
 
 
